@@ -19,9 +19,44 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import os, sys, wx
-from lexigrams import Dictionary
-import gettext
+import gettext, os, sys, wx
+import numpy as np
+
+class Dictionary:
+    def __init__(self, DICT='english.dic'):
+        self.dict_path = os.path.realpath(DICT)
+        self.dictionary = [w.strip() for w in open(DICT).readlines()]
+        self.dict_cca = np.array([self.to_cca(word) for word in self.dictionary])
+
+    def get_dict_path(self):
+        return self.dict_path
+
+    def index(self, c):
+        ''' Map Z->N and W->M, etc. '''
+        if c == ord('Z'): c = ord('N')
+        elif c == ord('W'): c = ord('M')
+        return c - ord('A')
+
+    def to_cca(self, word):
+        ''' Returns 26-index array of letter counts in string '''
+        W = [self.index(c) for c in bytearray(word.upper(), 'utf-8')]
+        return np.array([W.count(i) for i in range(26)])
+
+    def find_lexigrams(self, full, used):
+        ''' Returns possible lexigrams from leftover letters. If the anagram
+        cannot be spelled with the input letters, will return useful error
+        message instead. '''
+        letter_bank = self.to_cca(full) - self.to_cca(used)
+        res = []
+        if min(letter_bank) < 0:
+            for c in np.where(letter_bank<0)[0]:
+                pluralizer = '\'s' if letter_bank[c] < -1 else ''
+                res.append('Short {} letter {}{}'.format(-letter_bank[c],chr(c+ord('A')),pluralizer))
+        else:
+            w = np.where(np.min(letter_bank-self.dict_cca, axis=1) >= 0)
+            res = [self.dictionary[i] for i in w[0]]
+        return '\n'.join(res)
+# end of class Dictionary
 
 class AnagrammatistFrame(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -119,7 +154,8 @@ class AnagrammatistFrame(wx.Frame):
         event.Skip()
 
     def open_dict(self, event):
-        fdlg = wx.FileDialog(self, 'Dictionary file path', self.script_root, 'english.dic', 'Dictionary files(*.dic)|*.*', wx.FD_OPEN)
+        curpath = self.dictionary.get_dict_path()
+        fdlg = wx.FileDialog(self, 'Dictionary file path', os.path.dirname(curpath), os.path.basename(curpath), 'Dictionary files(*.dic)|*.*', wx.FD_OPEN)
         if fdlg.ShowModal() == wx.ID_OK:
             self.main_statusbar.SetStatusText('Loading Dictionary...', 0)
             self.dictionary = Dictionary(fdlg.GetPath())
