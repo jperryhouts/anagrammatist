@@ -174,16 +174,19 @@ class AnagrammatistFrame(wx.Frame):
 
 class AnagrammatistGUI(wx.App):
     def OnInit(self):
-        main_frame = AnagrammatistFrame(None, wx.ID_ANY, '')
-        self.SetTopWindow(main_frame)
-        script_root = os.path.dirname(os.path.realpath(sys.argv[0]))
-        main_frame.load_dictionary(os.path.join(script_root, 'english.dic'))
-        main_frame.Show()
+        self.main_frame = AnagrammatistFrame(None, wx.ID_ANY, '')
+        self.SetTopWindow(self.main_frame)
+        self.main_frame.Show()
         return 1
+
+    def load_dictionary(self, path):
+        self.main_frame.load_dictionary(path)
 # end of class AnagrammatistGUI
 
 if __name__ == '__main__':
     gettext.install('app')
 
     app = AnagrammatistGUI(0)
+    script_root = os.path.dirname(os.path.realpath(sys.argv[0]))
+    app.load_dictionary(os.path.join(script_root, 'english.dic'))
     app.MainLoop()
