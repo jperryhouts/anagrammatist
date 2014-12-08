@@ -88,8 +88,8 @@ class AnagrammatistFrame(wx.Frame):
         self.__set_properties()
         self.__do_layout()
 
-        self.Bind(wx.EVT_TEXT, self.UPDATE, self.input_txt)
-        self.Bind(wx.EVT_TEXT, self.UPDATE, self.anagram_txt)
+        self.Bind(wx.EVT_TEXT, self.inputs_changed, self.input_txt)
+        self.Bind(wx.EVT_TEXT, self.inputs_changed, self.anagram_txt)
         self.Bind(wx.EVT_MENU, self.open_dict, self.open_menu_item)
         self.Bind(wx.EVT_MENU, self.show_about, self.about_menu_item)
         self.Bind(wx.EVT_MENU, self.on_exit, self.quit_menu_item)
@@ -100,8 +100,6 @@ class AnagrammatistFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.open_dict, id=openId)
         accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), quitId), (wx.ACCEL_CTRL, ord('O'), openId)])
         self.SetAcceleratorTable(accel_tbl)
-
-        self.dictionary = Dictionary(os.path.join(self.script_root, 'english.dic'))
 
     def __set_properties(self):
         self.SetTitle(_('Anagrammatist'))
@@ -131,11 +129,27 @@ class AnagrammatistFrame(wx.Frame):
         grid_sizer_1.AddGrowableCol(0)
         self.Layout()
 
-    def UPDATE(self, event):
+    def do_update(self):
         orig = self.input_txt.GetValue()
         anagram = self.anagram_txt.GetValue()
         lexigrams = self.dictionary.find_lexigrams(orig, anagram)
         self.lexigrams_txt.SetValue(lexigrams)
+
+    def inputs_changed(self, event):
+        self.do_update()
+        event.Skip()
+
+    def load_dictionary(self, dict_path):
+        self.main_statusbar.SetStatusText('Loading Dictionary...', 0)
+        self.dictionary = Dictionary(dict_path)
+        self.main_statusbar.SetStatusText('', 0)
+        self.do_update()
+
+    def open_dict(self, event):
+        curpath = self.dictionary.get_dict_path()
+        fdlg = wx.FileDialog(self, 'Dictionary file path', os.path.dirname(curpath), os.path.basename(curpath), 'Dictionary files(*.dic)|*.*', wx.FD_OPEN)
+        if fdlg.ShowModal() == wx.ID_OK:
+            self.load_dictionary(fdlg.GetPath())
         event.Skip()
 
     def show_about(self, event):
@@ -153,15 +167,6 @@ class AnagrammatistFrame(wx.Frame):
         wx.AboutBox(info)
         event.Skip()
 
-    def open_dict(self, event):
-        curpath = self.dictionary.get_dict_path()
-        fdlg = wx.FileDialog(self, 'Dictionary file path', os.path.dirname(curpath), os.path.basename(curpath), 'Dictionary files(*.dic)|*.*', wx.FD_OPEN)
-        if fdlg.ShowModal() == wx.ID_OK:
-            self.main_statusbar.SetStatusText('Loading Dictionary...', 0)
-            self.dictionary = Dictionary(fdlg.GetPath())
-            self.main_statusbar.SetStatusText('', 0)
-        event.Skip()
-
     def on_exit(self, event):
         self.Destroy()
         event.Skip()
@@ -171,6 +176,8 @@ class AnagrammatistGUI(wx.App):
     def OnInit(self):
         main_frame = AnagrammatistFrame(None, wx.ID_ANY, '')
         self.SetTopWindow(main_frame)
+        script_root = os.path.dirname(os.path.realpath(sys.argv[0]))
+        main_frame.load_dictionary(os.path.join(script_root, 'english.dic'))
         main_frame.Show()
         return 1
 # end of class AnagrammatistGUI
