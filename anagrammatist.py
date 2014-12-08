@@ -30,11 +30,11 @@ class AboutPanel(wx.Panel):
         self.notebook = wx.Notebook(self, wx.ID_ANY, style=0)
         self.about_pane = wx.Panel(self.notebook, wx.ID_ANY)
         self.about_label_title = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagrammatist 0.98a"), style=wx.ALIGN_CENTRE)
-        self.about_label_info = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagram generator\n\nDeveloped by Jonathan Perry-Houts\n\nCopyright (C) 2014"), style=wx.ALIGN_CENTRE)
+        self.about_label_info = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagram Generator\n\nDeveloped by Jonathan Perry-Houts\n\nCopyright (C) 2014\n\nhttps://github.com/jperryhouts/anagrammatist"), style=wx.ALIGN_CENTRE)
         self.license_pane = wx.Panel(self.notebook, wx.ID_ANY)
         self.text_ctrl_1 = wx.TextCtrl(self.license_pane, wx.ID_ANY, _("    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>."), style=wx.TE_MULTILINE | wx.TE_READONLY)
         self.credits_pane = wx.Panel(self.notebook, wx.ID_ANY)
-        self.credits_txt = wx.TextCtrl(self.credits_pane, wx.ID_ANY, _("Written by Jonathan Perry-Houts"), style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.credits_txt = wx.TextCtrl(self.credits_pane, wx.ID_ANY, _("\n\nWritten by Jonathan Perry-Houts <jonathan (at) invertedearth.net>"), style=wx.TE_MULTILINE | wx.TE_READONLY)
 
         self.__set_properties()
         self.__do_layout()
@@ -150,7 +150,7 @@ class AnagrammatistFrame(wx.Frame):
         event.Skip()
 
     def show_about(self, event):
-        about_frame = wx.Frame(None, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE)
+        about_frame = wx.Frame(self, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE)
         about_panel = AboutPanel(about_frame)
         about_frame.SetSize((500, 350))
         about_frame.Show()
