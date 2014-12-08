@@ -25,30 +25,30 @@ import gettext
 
 class AnagrammatistFrame(wx.Frame):
     def __init__(self, *args, **kwds):
-        kwds["style"] = wx.DEFAULT_FRAME_STYLE
+        kwds['style'] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         
         self.script_root = os.path.dirname(os.path.realpath(sys.argv[0]))
         # Menu Bar
         self.main_menubar = wx.MenuBar()
         self.file_menu = wx.Menu()
-        self.open_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _("Load Dictionary\tCtrl+O"), "Load Dictionary", wx.ITEM_NORMAL)
+        self.open_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _('Load Dictionary\tCtrl+O'), 'Load Dictionary', wx.ITEM_NORMAL)
         self.file_menu.AppendItem(self.open_menu_item)
-        self.quit_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _("Quit\tCtrl+Q"), "Exit Anagrammatist", wx.ITEM_NORMAL)
+        self.quit_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _('Quit\tCtrl+Q'), 'Exit Anagrammatist', wx.ITEM_NORMAL)
         self.file_menu.AppendItem(self.quit_menu_item)
-        self.main_menubar.Append(self.file_menu, _("File"))
+        self.main_menubar.Append(self.file_menu, _('File'))
         self.help_menu = wx.Menu()
-        self.about_menu_item = wx.MenuItem(self.help_menu, wx.ID_ANY, _("About"), "About Anagrammatist", wx.ITEM_NORMAL)
+        self.about_menu_item = wx.MenuItem(self.help_menu, wx.ID_ANY, _('About'), 'About Anagrammatist', wx.ITEM_NORMAL)
         self.help_menu.AppendItem(self.about_menu_item)
-        self.main_menubar.Append(self.help_menu, _("Help"))
+        self.main_menubar.Append(self.help_menu, _('Help'))
         self.SetMenuBar(self.main_menubar)
         # Menu Bar end
         self.main_statusbar = self.CreateStatusBar(1, 0)
-        self.input_label = wx.StaticText(self, wx.ID_ANY, _("    Input: "), style=wx.ALIGN_RIGHT)
-        self.input_txt = wx.TextCtrl(self, wx.ID_ANY, "")
-        self.anagram_label = wx.StaticText(self, wx.ID_ANY, _("    Anagram: "), style=wx.ALIGN_RIGHT)
-        self.anagram_txt = wx.TextCtrl(self, wx.ID_ANY, "")
-        self.lexigrams_txt = wx.TextCtrl(self, wx.ID_ANY, _(""), style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.input_label = wx.StaticText(self, wx.ID_ANY, _('    Input: '), style=wx.ALIGN_RIGHT)
+        self.input_txt = wx.TextCtrl(self, wx.ID_ANY, '')
+        self.anagram_label = wx.StaticText(self, wx.ID_ANY, _('    Anagram: '), style=wx.ALIGN_RIGHT)
+        self.anagram_txt = wx.TextCtrl(self, wx.ID_ANY, '')
+        self.lexigrams_txt = wx.TextCtrl(self, wx.ID_ANY, _(''), style=wx.TE_MULTILINE | wx.TE_READONLY)
 
         self.__set_properties()
         self.__do_layout()
@@ -69,14 +69,14 @@ class AnagrammatistFrame(wx.Frame):
         self.dictionary = Dictionary(os.path.join(self.script_root, 'english.dic'))
 
     def __set_properties(self):
-        self.SetTitle(_("Anagrammatist"))
+        self.SetTitle(_('Anagrammatist'))
         _icon = wx.EmptyIcon()
         _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
         self.SetSize((600, 450))
         self.main_statusbar.SetStatusWidths([-1])
         # statusbar fields
-        main_statusbar_fields = [""]
+        main_statusbar_fields = ['']
         for i in range(len(main_statusbar_fields)):
             self.main_statusbar.SetStatusText(main_statusbar_fields[i], i)
 
@@ -104,7 +104,7 @@ class AnagrammatistFrame(wx.Frame):
         event.Skip()
 
     def show_about(self, event):
-        licence = _("    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.")
+        licence = _('    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.')
         info = wx.AboutDialogInfo()
         info.SetIcon(wx.Icon(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_PNG))
         info.SetName('Anagrammatist')
@@ -133,14 +133,14 @@ class AnagrammatistFrame(wx.Frame):
 
 class AnagrammatistGUI(wx.App):
     def OnInit(self):
-        main_frame = AnagrammatistFrame(None, wx.ID_ANY, "")
+        main_frame = AnagrammatistFrame(None, wx.ID_ANY, '')
         self.SetTopWindow(main_frame)
         main_frame.Show()
         return 1
 # end of class AnagrammatistGUI
 
-if __name__ == "__main__":
-    gettext.install("app")
+if __name__ == '__main__':
+    gettext.install('app')
 
     app = AnagrammatistGUI(0)
     app.MainLoop()
