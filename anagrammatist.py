@@ -29,7 +29,7 @@ class AboutPanel(wx.Panel):
         wx.Panel.__init__(self, *args, **kwds)
         self.notebook = wx.Notebook(self, wx.ID_ANY, style=0)
         self.about_pane = wx.Panel(self.notebook, wx.ID_ANY)
-        self.about_label_title = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagrammatist 0.98a"), style=wx.ALIGN_CENTRE)
+        self.about_label_title = wx.StaticText(self.about_pane, wx.ID_ANY, _("\nAnagrammatist 0.98a"), style=wx.ALIGN_CENTRE)
         self.about_label_info = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagram Generator\n\nDeveloped by Jonathan Perry-Houts\n\nCopyright (C) 2014\n\nhttps://github.com/jperryhouts/anagrammatist"), style=wx.ALIGN_CENTRE)
         self.license_pane = wx.Panel(self.notebook, wx.ID_ANY)
         self.text_ctrl_1 = wx.TextCtrl(self.license_pane, wx.ID_ANY, _("    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>."), style=wx.TE_MULTILINE | wx.TE_READONLY)
@@ -70,7 +70,6 @@ class AboutPanel(wx.Panel):
 
 class AnagrammatistFrame(wx.Frame):
     def __init__(self, *args, **kwds):
-        # begin wxGlade: AnagrammatistFrame.__init__
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         
@@ -99,7 +98,6 @@ class AnagrammatistFrame(wx.Frame):
 
         self.Bind(wx.EVT_TEXT, self.UPDATE, self.input_txt)
         self.Bind(wx.EVT_TEXT, self.UPDATE, self.anagram_txt)
-        # end wxGlade
         self.Bind(wx.EVT_MENU, self.on_exit, self.quit_menu_item)
         self.Bind(wx.EVT_MENU, self.show_about, self.about_menu_item)
         self.Bind(wx.EVT_CLOSE, self.on_exit)
@@ -111,7 +109,6 @@ class AnagrammatistFrame(wx.Frame):
         self.dictionary = Dictionary(os.path.join(self.script_root, 'english.dic'))
 
     def __set_properties(self):
-        # begin wxGlade: AnagrammatistFrame.__set_properties
         self.SetTitle(_("Anagrammatist"))
         _icon = wx.EmptyIcon()
         _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_ANY))
@@ -122,10 +119,8 @@ class AnagrammatistFrame(wx.Frame):
         main_statusbar_fields = [""]
         for i in range(len(main_statusbar_fields)):
             self.main_statusbar.SetStatusText(main_statusbar_fields[i], i)
-        # end wxGlade
 
     def __do_layout(self):
-        # begin wxGlade: AnagrammatistFrame.__do_layout
         grid_sizer_1 = wx.FlexGridSizer(2, 1, 0, 0)
         grid_sizer_2 = wx.FlexGridSizer(1, 4, 0, 0)
         grid_sizer_2.Add(self.input_label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 0)
@@ -140,9 +135,8 @@ class AnagrammatistFrame(wx.Frame):
         grid_sizer_1.AddGrowableRow(1)
         grid_sizer_1.AddGrowableCol(0)
         self.Layout()
-        # end wxGlade
 
-    def UPDATE(self, event):  # wxGlade: AnagrammatistFrame.<event_handler>
+    def UPDATE(self, event):
         orig = self.input_txt.GetValue()
         anagram = self.anagram_txt.GetValue()
         lexigrams = self.dictionary.find_lexigrams(orig, anagram)
@@ -159,20 +153,18 @@ class AnagrammatistFrame(wx.Frame):
     def on_exit(self, event):
         self.Destroy()
         event.Skip()
-
 # end of class AnagrammatistFrame
+
 class AnagrammatistGUI(wx.App):
     def OnInit(self):
-        #wx.InitAllImageHandlers()
         main_frame = AnagrammatistFrame(None, wx.ID_ANY, "")
         self.SetTopWindow(main_frame)
         main_frame.Show()
         return 1
-
 # end of class AnagrammatistGUI
 
 if __name__ == "__main__":
-    gettext.install("app") # replace with the appropriate catalog name
+    gettext.install("app")
 
     app = AnagrammatistGUI(0)
     app.MainLoop()
