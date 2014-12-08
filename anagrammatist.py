@@ -23,51 +23,6 @@ import os, sys, wx
 from lexigrams import Dictionary
 import gettext
 
-class AboutPanel(wx.Panel):
-    def __init__(self, *args, **kwds):
-        kwds["style"] = wx.TAB_TRAVERSAL
-        wx.Panel.__init__(self, *args, **kwds)
-        self.notebook = wx.Notebook(self, wx.ID_ANY, style=0)
-        self.about_pane = wx.Panel(self.notebook, wx.ID_ANY)
-        self.about_label_title = wx.StaticText(self.about_pane, wx.ID_ANY, _("\nAnagrammatist 0.98a"), style=wx.ALIGN_CENTRE)
-        self.about_label_info = wx.StaticText(self.about_pane, wx.ID_ANY, _("Anagram Generator\n\nDeveloped by Jonathan Perry-Houts\n\nCopyright (C) 2014\n\nhttps://github.com/jperryhouts/anagrammatist"), style=wx.ALIGN_CENTRE)
-        self.license_pane = wx.Panel(self.notebook, wx.ID_ANY)
-        self.text_ctrl_1 = wx.TextCtrl(self.license_pane, wx.ID_ANY, _("    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>."), style=wx.TE_MULTILINE | wx.TE_READONLY)
-        self.credits_pane = wx.Panel(self.notebook, wx.ID_ANY)
-        self.credits_txt = wx.TextCtrl(self.credits_pane, wx.ID_ANY, _("\n\nWritten by Jonathan Perry-Houts <jonathan (at) invertedearth.net>"), style=wx.TE_MULTILINE | wx.TE_READONLY)
-
-        self.__set_properties()
-        self.__do_layout()
-
-    def __set_properties(self):
-        self.about_label_title.SetFont(wx.Font(20, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
-
-    def __do_layout(self):
-        main_sizer = wx.FlexGridSizer(1, 1, 0, 0)
-        credits_pane_sizer = wx.FlexGridSizer(1, 1, 0, 0)
-        license_pane_sizer = wx.FlexGridSizer(1, 1, 0, 0)
-        about_pane_sizer = wx.FlexGridSizer(2, 1, 25, 0)
-        about_pane_sizer.Add(self.about_label_title, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
-        about_pane_sizer.Add(self.about_label_info, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
-        self.about_pane.SetSizer(about_pane_sizer)
-        about_pane_sizer.AddGrowableRow(1)
-        about_pane_sizer.AddGrowableCol(0)
-        license_pane_sizer.Add(self.text_ctrl_1, 0, wx.EXPAND, 0)
-        self.license_pane.SetSizer(license_pane_sizer)
-        license_pane_sizer.AddGrowableRow(0)
-        license_pane_sizer.AddGrowableCol(0)
-        credits_pane_sizer.Add(self.credits_txt, 0, wx.EXPAND, 0)
-        self.credits_pane.SetSizer(credits_pane_sizer)
-        credits_pane_sizer.AddGrowableRow(0)
-        credits_pane_sizer.AddGrowableCol(0)
-        self.notebook.AddPage(self.about_pane, _("About"))
-        self.notebook.AddPage(self.license_pane, _("License"))
-        self.notebook.AddPage(self.credits_pane, _("Credits"))
-        main_sizer.Add(self.notebook, 1, wx.EXPAND, 0)
-        self.SetSizer(main_sizer)
-        main_sizer.AddGrowableRow(0)
-        main_sizer.AddGrowableCol(0)
-
 class AnagrammatistFrame(wx.Frame):
     def __init__(self, *args, **kwds):
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
@@ -144,14 +99,26 @@ class AnagrammatistFrame(wx.Frame):
         event.Skip()
 
     def show_about(self, event):
-        about_frame = wx.Frame(self, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE)
-        about_panel = AboutPanel(about_frame)
-        about_frame.SetTitle(_("About Anagrammatist"))
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_ANY))
-        about_frame.SetIcon(_icon)
-        about_frame.SetSize((500, 350))
-        about_frame.Show()
+        licence = _("    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.")
+        info = wx.AboutDialogInfo()
+        info.SetIcon(wx.Icon(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_PNG))
+        info.SetName('Anagrammatist')
+        info.SetVersion('0.98a')
+        info.SetDescription('Anagram Generator')
+        info.SetCopyright('(C) 2014 Jonathan Perry-Houts')
+        info.SetWebSite('https://github.com/jperryhouts/anagrammatist')
+        info.SetLicence(licence)
+        info.AddDeveloper('Jonathan Perry-Houts')
+        info.AddDocWriter('Jonathan Perry-Houts')
+        wx.AboutBox(info)
+        event.Skip()
+
+    def open_dict(self, event):
+        fdlg = wx.FileDialog(self, 'Dictionary file path', self.script_root, 'english.dic', 'Dictionary files(*.dic)|*.*', wx.FD_OPEN)
+        if fdlg.ShowModal() == wx.ID_OK:
+            self.main_statusbar.SetStatusText('Loading Dictionary...', 0)
+            self.dictionary = Dictionary(fdlg.GetPath())
+            self.main_statusbar.SetStatusText('', 0)
         event.Skip()
 
     def on_exit(self, event):
