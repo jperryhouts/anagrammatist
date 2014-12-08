@@ -146,6 +146,10 @@ class AnagrammatistFrame(wx.Frame):
     def show_about(self, event):
         about_frame = wx.Frame(self, wx.ID_ANY, style=wx.DEFAULT_FRAME_STYLE)
         about_panel = AboutPanel(about_frame)
+        about_frame.SetTitle(_("About Anagrammatist"))
+        _icon = wx.EmptyIcon()
+        _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_ANY))
+        about_frame.SetIcon(_icon)
         about_frame.SetSize((500, 350))
         about_frame.Show()
         event.Skip()
