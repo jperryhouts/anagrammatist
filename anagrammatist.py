@@ -32,6 +32,8 @@ class AnagrammatistFrame(wx.Frame):
         # Menu Bar
         self.main_menubar = wx.MenuBar()
         self.file_menu = wx.Menu()
+        self.open_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _("Load Dictionary\tCtrl+O"), "Load Dictionary", wx.ITEM_NORMAL)
+        self.file_menu.AppendItem(self.open_menu_item)
         self.quit_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _("Quit\tCtrl+Q"), "Exit Anagrammatist", wx.ITEM_NORMAL)
         self.file_menu.AppendItem(self.quit_menu_item)
         self.main_menubar.Append(self.file_menu, _("File"))
@@ -53,12 +55,15 @@ class AnagrammatistFrame(wx.Frame):
 
         self.Bind(wx.EVT_TEXT, self.UPDATE, self.input_txt)
         self.Bind(wx.EVT_TEXT, self.UPDATE, self.anagram_txt)
-        self.Bind(wx.EVT_MENU, self.on_exit, self.quit_menu_item)
+        self.Bind(wx.EVT_MENU, self.open_dict, self.open_menu_item)
         self.Bind(wx.EVT_MENU, self.show_about, self.about_menu_item)
+        self.Bind(wx.EVT_MENU, self.on_exit, self.quit_menu_item)
         self.Bind(wx.EVT_CLOSE, self.on_exit)
-        randomId = wx.NewId()
-        self.Bind(wx.EVT_MENU, self.on_exit, id=randomId)
-        accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), randomId)])
+        quitId = wx.NewId()
+        self.Bind(wx.EVT_MENU, self.on_exit, id=quitId)
+        openId = wx.NewId()
+        self.Bind(wx.EVT_MENU, self.open_dict, id=openId)
+        accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), quitId), (wx.ACCEL_CTRL, ord('O'), openId)])
         self.SetAcceleratorTable(accel_tbl)
 
         self.dictionary = Dictionary(os.path.join(self.script_root, 'english.dic'))
