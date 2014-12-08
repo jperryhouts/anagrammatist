@@ -45,6 +45,10 @@ class AnagrammatistFrame(wx.Frame):
         self.quit_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, _("Quit\tCtrl+Q"), "Exit Anagrammatist", wx.ITEM_NORMAL)
         self.file_menu.AppendItem(self.quit_menu_item)
         self.main_menubar.Append(self.file_menu, _("File"))
+        self.help_menu = wx.Menu()
+        self.about_menu_item = wx.MenuItem(self.help_menu, wx.ID_ANY, _("About"), "About Anagrammatist", wx.ITEM_NORMAL)
+        self.help_menu.AppendItem(self.about_menu_item)
+        self.main_menubar.Append(self.help_menu, _("Help"))
         self.SetMenuBar(self.main_menubar)
         # Menu Bar end
         self.main_statusbar = self.CreateStatusBar(1, 0)
@@ -61,6 +65,7 @@ class AnagrammatistFrame(wx.Frame):
         self.Bind(wx.EVT_TEXT, self.UPDATE, self.anagram_txt)
         # end wxGlade
         self.Bind(wx.EVT_MENU, self.on_exit, self.quit_menu_item)
+        self.Bind(wx.EVT_MENU, self.show_about, self.about_menu_item)
         self.Bind(wx.EVT_CLOSE, self.on_exit)
         randomId = wx.NewId()
         self.Bind(wx.EVT_MENU, self.on_exit, id=randomId)
@@ -107,6 +112,9 @@ class AnagrammatistFrame(wx.Frame):
         lexigrams = self.dictionary.find_lexigrams(orig, anagram)
         self.lexigrams_txt.SetValue(lexigrams)
         event.Skip()
+
+    def show_about(self, event):
+        print('Not implemented.')
 
     def on_exit(self, event):
         self.Destroy()
