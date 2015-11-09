@@ -20,3 +20,18 @@ Debian/Ubuntu:
 OSX/Windows:
     See <a href="http://wiki.wxpython.org/How%20to%20install%20wxPython">http://wiki.wxpython.org/How to install wxPython</a>
 </pre>
+
+With those dependencies satisfied, one can run the program with
+
+<pre>
+git clone https://github.com/jperryhouts/anagrammatist.git
+./annagrammatist/annagrammatist.py
+</pre>
+
+or
+
+<pre>
+wget https://github.com/jperryhouts/anagrammatist/archive/master.zip
+unzip master.zip
+./anagrammatist-master/anagrammatist.py
+</pre>
