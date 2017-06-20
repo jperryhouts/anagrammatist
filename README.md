@@ -13,16 +13,7 @@ Anagrammatist is released under the terms of the GNU General
 Public License version 3.0 (GPL). You have the right to modify
 and redistribute it for any purpose under the terms of the GPL.
 
-<pre>
-Requires wxpython.
-Debian/Ubuntu:
-   sudo apt-get install python-wxgtk2.8
-OSX/Windows:
-    See <a href="http://wiki.wxpython.org/How%20to%20install%20wxPython">http://wiki.wxpython.org/How to install wxPython</a>
-</pre>
-
-With those dependencies satisfied, one can run the program with
-
+# Usage
 <pre>
 git clone https://github.com/jperryhouts/anagrammatist.git
 ./annagrammatist/annagrammatist.py
@@ -35,3 +26,15 @@ wget https://github.com/jperryhouts/anagrammatist/archive/master.zip
 unzip master.zip
 ./anagrammatist-master/anagrammatist.py
 </pre>
+
+# Dependencies
+<pre>
+Requires wxpython.
+Debian/Ubuntu:
+   sudo apt-get install python-wxgtk2.8
+OSX/Windows:
+    See <a href="http://wiki.wxpython.org/How%20to%20install%20wxPython">http://wiki.wxpython.org/How to install wxPython</a>
+</pre>
+
+# Screenshots
+![Anagrammatist in action](https://raw.githubusercontent.com/jperryhouts/anagrammatist/master/doc/screenshot.png)
