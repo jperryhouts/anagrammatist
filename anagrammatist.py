@@ -23,7 +23,7 @@ import gettext, os, sys, wx
 import numpy as np
 
 class Dictionary:
-    def __init__(self, DICT='english.dic'):
+    def __init__(self, DICT='resources/english.dic'):
         self.dict_path = os.path.realpath(DICT)
         self.dictionary = [w.strip() for w in open(DICT).readlines()]
         self.dict_cca = np.array([self.to_cca(word) for word in self.dictionary])
@@ -104,7 +104,7 @@ class AnagrammatistFrame(wx.Frame):
     def __set_properties(self):
         self.SetTitle(_('Anagrammatist'))
         _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_ANY))
+        _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, 'resources/icon.png'), wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
         self.SetSize((600, 450))
         self.main_statusbar.SetStatusWidths([-1])
@@ -155,7 +155,7 @@ class AnagrammatistFrame(wx.Frame):
     def show_about(self, event):
         licence = _('    Anagrammatist Anagram Generator\n    Copyright (C) 2014 Jonathan Perry-Houts\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.')
         info = wx.AboutDialogInfo()
-        info.SetIcon(wx.Icon(os.path.join(self.script_root, 'A-icon.png'), wx.BITMAP_TYPE_PNG))
+        info.SetIcon(wx.Icon(os.path.join(self.script_root, 'resources/icon.png'), wx.BITMAP_TYPE_PNG))
         info.SetName('Anagrammatist')
         info.SetVersion('0.98a')
         info.SetDescription('Anagram Generator')
@@ -188,5 +188,5 @@ if __name__ == '__main__':
 
     app = AnagrammatistGUI(0)
     script_root = os.path.dirname(os.path.realpath(sys.argv[0]))
-    app.load_dictionary(os.path.join(script_root, 'english.dic'))
+    app.load_dictionary(os.path.join(script_root, 'resources/english.dic'))
     app.MainLoop()
