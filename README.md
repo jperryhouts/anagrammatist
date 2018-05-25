@@ -32,9 +32,9 @@ unzip master.zip
 
 # Dependencies
 <pre>
-Requires wxpython.
+Requires wxpython, and numpy.
 Debian/Ubuntu:
-   sudo apt-get install python-wxgtk2.8
+   sudo apt-get install python-wxgtk2.8 python-numpy
 OSX/Windows:
     See <a href="http://wiki.wxpython.org/How%20to%20install%20wxPython">http://wiki.wxpython.org/How to install wxPython</a>
 </pre>
