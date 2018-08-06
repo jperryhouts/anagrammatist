@@ -19,7 +19,7 @@ and redistribute it for any purpose under the terms of the GPL.
 # Usage
 <pre>
 git clone https://github.com/jperryhouts/anagrammatist.git
-./annagrammatist/annagrammatist.py
+./anagrammatist/anagrammatist.py
 </pre>
 
 or
