@@ -20,6 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import gettext, os, sys, wx
+try:
+    # wxPython >= 4.0
+    from wx.adv import AboutDialogInfo as wxAboutDialogInfo
+    from wx.adv import AboutBox as wxAboutBox
+except ImportError:
+    # wxPython < 4.0
+    from wx import AboutDialogInfo as wxAboutDialogInfo
+    from wx import AboutBox as wxAboutBox
 import numpy as np
 
 class Dictionary:
@@ -71,15 +79,24 @@ class AnagrammatistFrame(wx.Frame):
         self.file_menu = wx.Menu()
         self.open_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, \
                 _('Load Dictionary\tCtrl+O'), 'Load Dictionary', wx.ITEM_NORMAL)
-        self.file_menu.AppendItem(self.open_menu_item)
+        try:
+            self.file_menu.Append(self.open_menu_item)
+        except TypeError:
+            self.file_menu.AppendItem(self.open_menu_item)
         self.quit_menu_item = wx.MenuItem(self.file_menu, wx.ID_ANY, \
                 _('Quit\tCtrl+Q'), 'Exit Anagrammatist', wx.ITEM_NORMAL)
-        self.file_menu.AppendItem(self.quit_menu_item)
+        try:
+            self.file_menu.Append(self.quit_menu_item)
+        except TypeError:
+            self.file_menu.AppendItem(self.quit_menu_item)
         self.main_menubar.Append(self.file_menu, _('File'))
         self.help_menu = wx.Menu()
         self.about_menu_item = wx.MenuItem(self.help_menu, wx.ID_ANY, \
                 _('About'), 'About Anagrammatist', wx.ITEM_NORMAL)
-        self.help_menu.AppendItem(self.about_menu_item)
+        try:
+            self.help_menu.Append(self.about_menu_item)
+        except TypeError:
+            self.help_menu.AppendItem(self.about_menu_item)
         self.main_menubar.Append(self.help_menu, _('Help'))
         self.SetMenuBar(self.main_menubar)
         # Menu Bar end
@@ -112,7 +129,10 @@ class AnagrammatistFrame(wx.Frame):
 
     def __set_properties(self):
         self.SetTitle(_('Anagrammatist'))
-        _icon = wx.EmptyIcon()
+        try:
+            _icon = wx.Icon()
+        except TypeError:
+            _icon = wx.EmptyIcon()
         _icon.CopyFromBitmap(wx.Bitmap(os.path.join(self.script_root, \
                 'resources/icon.png'), wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
@@ -184,7 +204,7 @@ class AnagrammatistFrame(wx.Frame):
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
         ''')
-        info = wx.AboutDialogInfo()
+        info = wxAboutDialogInfo()
         info.SetIcon(wx.Icon(os.path.join(self.script_root, \
                 'resources/icon.png'), wx.BITMAP_TYPE_PNG))
         info.SetName('Anagrammatist')
@@ -195,7 +215,7 @@ class AnagrammatistFrame(wx.Frame):
         info.SetLicence(license)
         info.AddDeveloper('Jonathan Perry-Houts')
         info.AddDocWriter('Jonathan Perry-Houts')
-        wx.AboutBox(info)
+        wxAboutBox(info)
         event.Skip()
 
     def on_exit(self, event):
